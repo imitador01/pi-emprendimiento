@@ -3,6 +3,18 @@ const state = {
   slot: "10:20–10:40",
   products: [],
   orderResult: null,
+  carouselBaseCount: 0,
+  carouselHovered: false,
+  carouselDragging: false,
+  carouselInteracting: false,
+  carouselSuppressClick: false,
+  carouselCycleWidth: 0,
+  carouselAutoPosition: 0,
+  carouselInteractionTimeout: 0,
+  carouselAnimationFrame: 0,
+  carouselLastFrame: 0,
+  carouselDragStartX: 0,
+  carouselDragStartScroll: 0,
 };
 
 const screens = {
@@ -101,26 +113,32 @@ function renderMenu() {
     return;
   }
 
-  const featuredProducts = [...state.products.slice(0, 3), ...state.products.slice(0, 3)];
+  state.carouselBaseCount = Math.min(state.products.length, 3);
+  const featuredSet = state.products.slice(0, state.carouselBaseCount);
+  const featuredProducts = [...featuredSet, ...featuredSet, ...featuredSet];
 
   featured.innerHTML = `
-    <div class="featured-track">
-      ${featuredProducts
-        .map(
-          (product) => `
-            <article class="product-card">
-              <div class="food-image">
-                <img src="${resolveProductImage(product.name)}" alt="${product.name}" />
-              </div>
-              <small>${product.name}</small>
-              <strong>${money(product.price)}</strong>
-              <button class="add-wide" type="button" data-product-id="${product.id}" data-price="${product.price}">
-                +
-              </button>
-            </article>
-          `,
-        )
-        .join("")}
+    <div class="featured-viewport" id="featured-viewport">
+      <div class="featured-track">
+        ${featuredProducts
+          .map(
+            (product) => `
+              <article class="product-card" data-row="${product.id}">
+                <div class="food-image">
+                  <img src="${resolveProductImage(product.name)}" alt="${product.name}" />
+                </div>
+                <small>${product.name}</small>
+                <strong>${money(product.price)}</strong>
+                <div class="quantity featured-quantity">
+                  <button data-action="minus" type="button" data-product-id="${product.id}" aria-label="Quitar ${product.name}">−</button>
+                  <span>0</span>
+                  <button class="plus" data-action="plus" type="button" data-product-id="${product.id}" aria-label="Agregar ${product.name}">+</button>
+                </div>
+              </article>
+            `,
+            )
+            .join("")}
+      </div>
     </div>
   `;
 
@@ -152,15 +170,10 @@ function renderMenu() {
 
   bindProductControls();
   renderCart();
+  bindFeaturedCarousel();
 }
 
 function bindProductControls() {
-  document.querySelectorAll(".add-wide").forEach((button) => {
-    button.addEventListener("click", () => {
-      updateQuantity(Number(button.dataset.productId), 1);
-    });
-  });
-
   document.querySelectorAll('[data-action="plus"]').forEach((button) => {
     button.addEventListener("click", () => {
       updateQuantity(Number(button.dataset.productId), 1);
@@ -179,6 +192,190 @@ function bindProductControls() {
       updateQuantity(productId, -1);
     });
   });
+}
+
+function normalizeCarouselPosition(viewport, position = viewport.scrollLeft) {
+  const cycleWidth = state.carouselCycleWidth;
+
+  if (!cycleWidth) {
+    return position;
+  }
+
+  if (position < cycleWidth) {
+    return position + cycleWidth;
+  }
+
+  if (position >= cycleWidth * 2) {
+    return position - cycleWidth;
+  }
+
+  return position;
+}
+
+function animateFeaturedCarousel(timestamp) {
+  const viewport = document.querySelector("#featured-viewport");
+
+  if (!viewport) {
+    return;
+  }
+
+  if (!state.carouselLastFrame) {
+    state.carouselLastFrame = timestamp;
+  }
+
+  const elapsed = Math.min(timestamp - state.carouselLastFrame, 50);
+  state.carouselLastFrame = timestamp;
+
+  if (
+    screens.menu.classList.contains("active") &&
+    !state.carouselHovered &&
+    !viewport.matches(":hover") &&
+    !state.carouselInteracting
+  ) {
+    state.carouselAutoPosition += (24 * elapsed) / 1000;
+    state.carouselAutoPosition = normalizeCarouselPosition(
+      viewport,
+      state.carouselAutoPosition,
+    );
+    viewport.scrollLeft = state.carouselAutoPosition;
+  }
+
+  state.carouselAnimationFrame = window.requestAnimationFrame(animateFeaturedCarousel);
+}
+
+function bindFeaturedCarousel() {
+  const viewport = document.querySelector("#featured-viewport");
+  const cards = viewport.querySelectorAll(".product-card");
+  const firstCard = cards[0];
+  const nextCopyFirstCard = cards[state.carouselBaseCount];
+
+  state.carouselCycleWidth = nextCopyFirstCard.offsetLeft - firstCard.offsetLeft;
+  viewport.scrollLeft = state.carouselCycleWidth;
+  state.carouselAutoPosition = state.carouselCycleWidth;
+  state.carouselLastFrame = 0;
+
+  viewport.addEventListener("mouseenter", () => {
+    state.carouselHovered = true;
+  });
+
+  viewport.addEventListener("mouseleave", () => {
+    state.carouselHovered = false;
+  });
+
+  viewport.addEventListener(
+    "wheel",
+    (event) => {
+      state.carouselInteracting = true;
+      window.clearTimeout(state.carouselInteractionTimeout);
+      state.carouselInteractionTimeout = window.setTimeout(() => {
+        state.carouselInteracting = false;
+      }, 150);
+
+      if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+        event.preventDefault();
+        viewport.scrollLeft += event.deltaY;
+        state.carouselAutoPosition = normalizeCarouselPosition(viewport);
+        viewport.scrollLeft = state.carouselAutoPosition;
+      }
+    },
+    { passive: false },
+  );
+
+  viewport.addEventListener("pointerdown", (event) => {
+    if (event.pointerType !== "mouse" || event.button !== 0) {
+      return;
+    }
+
+    if (event.target.closest("button")) {
+      return;
+    }
+
+    state.carouselDragging = true;
+    state.carouselInteracting = true;
+    state.carouselAutoPosition = viewport.scrollLeft;
+    state.carouselDragStartX = event.clientX;
+    state.carouselDragStartScroll = viewport.scrollLeft;
+    viewport.classList.add("is-dragging");
+    viewport.setPointerCapture(event.pointerId);
+  });
+
+  viewport.addEventListener("pointermove", (event) => {
+    if (!state.carouselDragging || event.pointerType !== "mouse") {
+      return;
+    }
+
+    const distance = event.clientX - state.carouselDragStartX;
+    viewport.scrollLeft = state.carouselDragStartScroll - distance;
+    state.carouselAutoPosition = normalizeCarouselPosition(viewport);
+    viewport.scrollLeft = state.carouselAutoPosition;
+
+    if (Math.abs(distance) > 5) {
+      state.carouselSuppressClick = true;
+    }
+  });
+
+  const stopDragging = (event) => {
+    if (!state.carouselDragging || event.pointerType !== "mouse") {
+      return;
+    }
+
+    state.carouselDragging = false;
+    state.carouselInteracting = false;
+    viewport.classList.remove("is-dragging");
+
+    if (viewport.hasPointerCapture(event.pointerId)) {
+      viewport.releasePointerCapture(event.pointerId);
+    }
+
+    if (state.carouselSuppressClick) {
+      window.setTimeout(() => {
+        state.carouselSuppressClick = false;
+      }, 0);
+    }
+  };
+
+  viewport.addEventListener("pointerup", stopDragging);
+  viewport.addEventListener("pointercancel", stopDragging);
+
+  viewport.addEventListener(
+    "click",
+    (event) => {
+      if (state.carouselSuppressClick) {
+        event.preventDefault();
+        event.stopPropagation();
+        state.carouselSuppressClick = false;
+      }
+    },
+    true,
+  );
+
+  viewport.addEventListener(
+    "touchstart",
+    () => {
+      state.carouselInteracting = true;
+      state.carouselAutoPosition = viewport.scrollLeft;
+    },
+    { passive: true },
+  );
+
+  const stopTouchInteraction = () => {
+    state.carouselAutoPosition = normalizeCarouselPosition(viewport);
+    viewport.scrollLeft = state.carouselAutoPosition;
+    state.carouselInteracting = false;
+  };
+
+  viewport.addEventListener("touchend", stopTouchInteraction, { passive: true });
+  viewport.addEventListener("touchcancel", stopTouchInteraction, { passive: true });
+
+  viewport.addEventListener("scroll", () => {
+    if (state.carouselDragging || state.carouselInteracting) {
+      state.carouselAutoPosition = normalizeCarouselPosition(viewport);
+      viewport.scrollLeft = state.carouselAutoPosition;
+    }
+  });
+
+  window.cancelAnimationFrame(state.carouselAnimationFrame);
+  state.carouselAnimationFrame = window.requestAnimationFrame(animateFeaturedCarousel);
 }
 
 function renderCart() {

@@ -183,33 +183,37 @@ h2 {
 }
 
 .featured-row {
-  position: relative;
   margin-right: -20px;
   margin-bottom: 18px;
-  overflow: hidden;
+}
+
+.featured-viewport {
+  padding-right: 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.featured-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.featured-viewport::-webkit-scrollbar {
+  display: none;
 }
 
 .featured-track {
   display: flex;
   gap: 10px;
   width: max-content;
-  animation: featured-carousel 18s linear infinite;
-}
-
-.featured-row:hover .featured-track {
-  animation-play-state: paused;
-}
-
-@keyframes featured-carousel {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
 }
 
 .product-card {
+  flex: 0 0 145px;
   min-width: 145px;
   padding: 10px;
   border: 1px solid #eaded3;
@@ -253,15 +257,9 @@ h2 {
   font-size: 14px;
 }
 
-.add-wide {
-  width: 100%;
-  height: 34px;
+.featured-quantity {
+  justify-content: center;
   margin-top: 9px;
-  border: 0;
-  border-radius: 10px;
-  color: white;
-  background: #21786e;
-  font-weight: 800;
 }
 
 .menu-list {
