@@ -19,18 +19,18 @@ const money = (value) =>
   }).format(value);
 
 const productImages = {
-  Hamburguesa: "/data/images/hamburguesa.jpg",
-  "Jugo natural": "/data/images/jugo-natural.jpg",
-  "Empanada de queso": "/data/images/empanada.jpg",
-  "Café americano": "/data/images/cafe-americano.jpg",
-  "Sandwich de pollo": "/data/images/sandwich-pollo.jpg",
-  "Té helado": "/data/images/te-helado.jpg",
-  Brownie: "/data/images/brownie.jpg",
-  "Almuerzo universitario": "/data/images/almuerzo-universitario.jpg",
+  Hamburguesa: "data/images/hamburguesa.jpg",
+  "Jugo natural": "data/images/jugo-natural.jpg",
+  "Empanada de queso": "data/images/empanada.jpg",
+  "Café americano": "data/images/cafe-americano.jpg",
+  "Sandwich de pollo": "data/images/sandwich-pollo.jpg",
+  "Té helado": "data/images/te-helado.jpg",
+  Brownie: "data/images/brownie.jpg",
+  "Almuerzo universitario": "data/images/almuerzo-universitario.jpg",
 };
 
 function resolveProductImage(productName) {
-  return productImages[productName] || "/data/images/cafe-americano.jpg";
+  return productImages[productName] || "data/images/cafe-americano.jpg";
 }
 
 function total() {
