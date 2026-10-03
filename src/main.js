@@ -86,21 +86,26 @@ function renderMenu() {
     return;
   }
 
-  featured.innerHTML = state.products
-    .slice(0, 3)
-    .map(
-      (product) => `
-        <article class="product-card">
-          <div class="food-image"><span></span><b></b></div>
-          <small>${product.name}</small>
-          <strong>${money(product.price)}</strong>
-          <button class="add-wide" type="button" data-product-id="${product.id}" data-price="${product.price}">
-            +
-          </button>
-        </article>
-      `,
-    )
-    .join("");
+  const featuredProducts = [...state.products.slice(0, 3), ...state.products.slice(0, 3)];
+
+  featured.innerHTML = `
+    <div class="featured-track">
+      ${featuredProducts
+        .map(
+          (product) => `
+            <article class="product-card">
+              <div class="food-image"><span></span><b></b></div>
+              <small>${product.name}</small>
+              <strong>${money(product.price)}</strong>
+              <button class="add-wide" type="button" data-product-id="${product.id}" data-price="${product.price}">
+                +
+              </button>
+            </article>
+          `,
+        )
+        .join("")}
+    </div>
+  `;
 
   list.innerHTML = state.products
     .slice(3)

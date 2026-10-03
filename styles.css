@@ -183,11 +183,30 @@ h2 {
 }
 
 .featured-row {
-  display: flex;
-  gap: 10px;
+  position: relative;
   margin-right: -20px;
   margin-bottom: 18px;
   overflow: hidden;
+}
+
+.featured-track {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  animation: featured-carousel 18s linear infinite;
+}
+
+.featured-row:hover .featured-track {
+  animation-play-state: paused;
+}
+
+@keyframes featured-carousel {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .product-card {
