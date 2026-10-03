@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Café Campus · Pedidos anticipados</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="phone" aria-live="polite">
+        <header class="topbar">
+          <div class="brand-mark">☕</div>
+          <div class="brand-copy">
+            <span>Pedidos anticipados</span>
+            <strong>Café Campus · Piloto</strong>
+          </div>
+          <div class="session"><i></i> Sin registro</div>
+        </header>
+
+        <div class="stepbar">
+          <span id="step-label">Paso 1 de 3 · Menú</span>
+          <div class="dots" id="step-dots">
+            <i class="active"></i><i></i><i></i>
+          </div>
+        </div>
+
+        <div id="screen-menu" class="screen active">
+          <div class="scroll-area menu-scroll">
+            <p class="eyebrow">Lunes, 28 de septiembre</p>
+            <h1>Menú del día</h1>
+            <p class="muted">
+              Elige lo que quieres y recógelo entre clases.
+            </p>
+
+            <div class="notice">
+              <strong>
+                Pide antes de tu descanso y<br />
+                recógelo sin fila
+              </strong>
+            </div>
+
+            <h2>Destacados del día</h2>
+            <div id="featured-products" class="featured-row"></div>
+
+            <h2>Resto del menú</h2>
+            <div id="menu-list" class="menu-list"></div>
+
+            <div class="field-group">
+              <label class="field-label" for="customer-name">Nombre completo</label>
+              <input
+                id="customer-name"
+                type="text"
+                placeholder="Escribe tu nombre completo"
+              />
+            </div>
+
+            <p id="menu-error" class="form-error" hidden></p>
+          </div>
+
+          <footer class="order-footer">
+            <div class="summary">
+              <span id="product-count">0 productos</span>
+              <strong>
+                Subtotal · <b id="subtotal">$0</b>
+              </strong>
+            </div>
+
+            <button class="primary" id="go-summary" type="button">
+              Confirmar pedido <span>→</span>
+            </button>
+          </footer>
+        </div>
+
+        <div id="screen-summary" class="screen">
+          <div class="scroll-area">
+            <div class="back-row">
+              <button class="back" id="back-menu" type="button">←</button>
+            </div>
+
+            <article class="order-card">
+              <div class="card-heading">
+                <strong>Tu pedido</strong>
+                <button id="edit-order" type="button">Editar</button>
+              </div>
+
+              <div id="order-lines"></div>
+
+              <div class="subtotal-row">
+                <span>Subtotal</span>
+                <strong id="summary-total">$0 COP</strong>
+              </div>
+            </article>
+
+            <h1 class="pickup-title">¿Cuándo lo recoges?</h1>
+
+            <p class="helper">
+              Selecciona una franja fija de 20 minutos.
+            </p>
+
+            <div class="slots" id="slot-picker">
+              <button type="button" data-slot="10:00–10:20">10:00–10:20</button>
+              <button type="button" class="selected" data-slot="10:20–10:40">✓&nbsp;&nbsp;10:20–10:40</button>
+              <button type="button" data-slot="10:40–11:00">10:40–11:00</button>
+              <button type="button" data-slot="11:00–11:20">11:00–11:20</button>
+            </div>
+
+            <p id="summary-error" class="form-error" hidden></p>
+
+            <div class="info-box">
+              ⓘ&nbsp;&nbsp;Te avisaremos en pantalla cuando quede confirmado.
+            </div>
+          </div>
+
+          <footer class="action-footer">
+            <button class="primary" id="confirm-order" type="button">
+              Confirmar pedido <span>✓</span>
+            </button>
+          </footer>
+        </div>
+
+        <div id="screen-confirmed" class="screen">
+          <div class="confirmation-content">
+            <div class="success-icon">✓</div>
+
+            <span class="confirmed-tag">
+              ✿&nbsp; Pedido confirmado
+            </span>
+
+            <p class="ready">¡Todo listo!</p>
+            <h1>Pedido #<span id="confirmation-number">0</span></h1>
+
+            <article class="ticket">
+              <div class="ticket-row">
+                <span>◷&nbsp; Franja de recogida</span>
+                <strong id="confirmation-pickup">10:20–10:40</strong>
+              </div>
+
+              <div class="code-panel">
+                <small>
+                  Muestra este código al recoger tu pedido
+                </small>
+                <strong id="confirmation-code">PED-0000</strong>
+              </div>
+
+              <div class="ticket-row total-row">
+                <span>◷&nbsp; Total</span>
+                <strong id="confirmation-total">$0 COP</strong>
+              </div>
+            </article>
+
+            <p id="whatsapp-status" class="whatsapp-status" hidden>
+              WhatsApp no pudo abrirse automáticamente
+            </p>
+
+            <button class="secondary" id="open-whatsapp" type="button" hidden>
+              ABRIR WHATSAPP
+            </button>
+
+            <p class="save-note">
+              No necesitas iniciar sesión. Guarda esta pantalla<br />
+              hasta recoger tu pedido.
+            </p>
+          </div>
+
+          <footer class="action-footer">
+            <button class="secondary" id="restart" type="button">
+              Volver al inicio&nbsp;&nbsp;⌂
+            </button>
+          </footer>
+        </div>
+      </section>
+    </main>
+
+    <script src="src/main.js"></script>
+  </body>
+</html>
