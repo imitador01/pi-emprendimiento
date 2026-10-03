@@ -18,6 +18,21 @@ const money = (value) =>
     maximumFractionDigits: 0,
   }).format(value);
 
+const productImages = {
+  Hamburguesa: "/data/images/hamburguesa.jpg",
+  "Jugo natural": "/data/images/jugo-natural.jpg",
+  "Empanada de queso": "/data/images/empanada.jpg",
+  "Café americano": "/data/images/cafe-americano.jpg",
+  "Sandwich de pollo": "/data/images/sandwich-pollo.jpg",
+  "Té helado": "/data/images/te-helado.jpg",
+  Brownie: "/data/images/brownie.jpg",
+  "Almuerzo universitario": "/data/images/almuerzo-universitario.jpg",
+};
+
+function resolveProductImage(productName) {
+  return productImages[productName] || "/data/images/cafe-americano.jpg";
+}
+
 function total() {
   return [...state.items.values()].reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -94,7 +109,9 @@ function renderMenu() {
         .map(
           (product) => `
             <article class="product-card">
-              <div class="food-image"><span></span><b></b></div>
+              <div class="food-image">
+                <img src="${resolveProductImage(product.name)}" alt="${product.name}" />
+              </div>
               <small>${product.name}</small>
               <strong>${money(product.price)}</strong>
               <button class="add-wide" type="button" data-product-id="${product.id}" data-price="${product.price}">
@@ -112,12 +129,14 @@ function renderMenu() {
     .map(
       (product) => `
         <article class="list-card" data-row="${product.id}">
-          <div class="thumb"><span></span></div>
+      <div class="thumb">
+        <img src="${resolveProductImage(product.name)}" alt="${product.name}" />
+      </div>
 
-          <div class="product-info">
-            <small>${product.name}</small>
-            <strong>${money(product.price)}</strong>
-          </div>
+      <div class="product-info">
+        <small>${product.name}</small>
+        <strong>${money(product.price)}</strong>
+      </div>
 
           <div class="quantity">
             <button data-action="minus" type="button" data-product-id="${product.id}">−</button>
