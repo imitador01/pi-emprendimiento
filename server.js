@@ -95,7 +95,6 @@ function buildWhatsAppMessage(order) {
     'Hola, quiero confirmar mi pedido.',
     '',
     `Nombre: ${order.clientName}`,
-    order.phone ? `Teléfono: ${order.phone}` : 'Teléfono: No informado',
     '',
     'Pedido:',
     ...lines,
