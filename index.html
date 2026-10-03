@@ -1,34 +1,61 @@
+```html
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- Verificación de Google Search Console -->
+    <meta
+      name="google-site-verification"
+      content="ejjkFHhX214PxUbZsxVD22MepN35BHCrgyAjHZ_5Nl8"
+    />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Café Campus · Pedidos anticipados</title>
+
+    <!-- Información para Google -->
+    <title>Cafe Campus UCEVA · Pedidos anticipados</title>
+    <meta
+      name="description"
+      content="Cafe Campus UCEVA: realiza tus pedidos anticipados de cafetería y recógelos fácilmente entre clases."
+    />
+    <meta name="application-name" content="Cafe Campus UCEVA" />
+
     <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body>
     <main class="app-shell">
       <section class="phone" aria-live="polite">
         <header class="topbar">
-          <div class="brand-mark">☕</div>
+          <div class="brand-mark"></div>
+
           <div class="brand-copy">
             <span>Pedidos anticipados</span>
             <strong>Café Campus · Piloto</strong>
           </div>
-          <div class="session"><i></i> Sin registro</div>
+
+          <div class="session">
+            <i></i>
+            Sin registro
+          </div>
         </header>
 
         <div class="stepbar">
           <span id="step-label">Paso 1 de 3 · Menú</span>
+
           <div class="dots" id="step-dots">
-            <i class="active"></i><i></i><i></i>
+            <i class="active"></i>
+            <i></i>
+            <i></i>
           </div>
         </div>
 
         <div id="screen-menu" class="screen active">
           <div class="scroll-area menu-scroll">
             <p class="eyebrow">Lunes, 28 de septiembre</p>
+
             <h1>Menú del día</h1>
+
             <p class="muted">
               Elige lo que quieres y recógelo entre clases.
             </p>
@@ -41,13 +68,18 @@
             </div>
 
             <h2>Destacados del día</h2>
+
             <div id="featured-products" class="featured-row"></div>
 
             <h2>Resto del menú</h2>
+
             <div id="menu-list" class="menu-list"></div>
 
             <div class="field-group">
-              <label class="field-label" for="customer-name">Nombre completo</label>
+              <label class="field-label" for="customer-name">
+                Nombre completo
+              </label>
+
               <input
                 id="customer-name"
                 type="text"
@@ -61,6 +93,7 @@
           <footer class="order-footer">
             <div class="summary">
               <span id="product-count">0 productos</span>
+
               <strong>
                 Subtotal · <b id="subtotal">$0</b>
               </strong>
@@ -99,10 +132,25 @@
             </p>
 
             <div class="slots" id="slot-picker">
-              <button type="button" data-slot="10:00–10:20">10:00–10:20</button>
-              <button type="button" class="selected" data-slot="10:20–10:40">✓&nbsp;&nbsp;10:20–10:40</button>
-              <button type="button" data-slot="10:40–11:00">10:40–11:00</button>
-              <button type="button" data-slot="11:00–11:20">11:00–11:20</button>
+              <button type="button" data-slot="10:00–10:20">
+                10:00–10:20
+              </button>
+
+              <button
+                type="button"
+                class="selected"
+                data-slot="10:20–10:40"
+              >
+                ✓&nbsp;&nbsp;10:20–10:40
+              </button>
+
+              <button type="button" data-slot="10:40–11:00">
+                10:40–11:00
+              </button>
+
+              <button type="button" data-slot="11:00–11:20">
+                11:00–11:20
+              </button>
             </div>
 
             <p id="summary-error" class="form-error" hidden></p>
@@ -128,7 +176,10 @@
             </span>
 
             <p class="ready">¡Todo listo!</p>
-            <h1>Pedido #<span id="confirmation-number">0</span></h1>
+
+            <h1>
+              Pedido #<span id="confirmation-number">0</span>
+            </h1>
 
             <article class="ticket">
               <div class="ticket-row">
@@ -140,6 +191,7 @@
                 <small>
                   Muestra este código al recoger tu pedido
                 </small>
+
                 <strong id="confirmation-code">PED-0000</strong>
               </div>
 
@@ -153,7 +205,12 @@
               WhatsApp no pudo abrirse automáticamente
             </p>
 
-            <button class="secondary" id="open-whatsapp" type="button" hidden>
+            <button
+              class="secondary"
+              id="open-whatsapp"
+              type="button"
+              hidden
+            >
               ABRIR WHATSAPP
             </button>
 
@@ -175,3 +232,4 @@
     <script src="src/main.js"></script>
   </body>
 </html>
+```
