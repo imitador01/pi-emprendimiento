@@ -142,6 +142,11 @@ function validateOrderPayload(payload) {
 }
 
 app.use(express.json({ limit: '1mb' }));
+
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain').sendFile(path.join(rootDir, 'robots.txt'));
+});
+
 app.use(express.static(rootDir));
 
 app.get('/api/health', (req, res) => {
