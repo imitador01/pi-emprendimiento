@@ -5,7 +5,7 @@ const Database = require('better-sqlite3');
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
-const WHATSAPP_NUMBER = (process.env.WHATSAPP_NUMBER || '+57 3137586609').replace(/\D/g, '');
+const WHATSAPP_NUMBER = (process.env.WHATSAPP_NUMBER || '+57 3160433615').replace(/\D/g, '');
 const rootDir = __dirname;
 const dataDir = path.join(rootDir, 'data');
 
