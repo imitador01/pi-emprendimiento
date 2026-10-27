@@ -18,6 +18,7 @@
       content="Cafe Campus UCEVA: realiza tus pedidos anticipados de cafetería y recógelos fácilmente entre clases."
     />
     <meta name="application-name" content="Cafe Campus UCEVA" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
 
     <!-- Canonical y redes sociales -->
     <link rel="canonical" href="https://pi-emprendimiento.onrender.com/" />
@@ -32,6 +33,117 @@
     <meta name="twitter:card" content="summary" />
 
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- Datos estructurados: menú indexable sin necesidad de JavaScript -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FoodEstablishment",
+        "name": "Cafe Campus UCEVA",
+        "description": "Cafetería universitaria de la UCEVA: pide tu comida anticipada y recógela entre clases sin filas.",
+        "url": "https://pi-emprendimiento.onrender.com/",
+        "servesCuisine": ["Comida rápida", "Café"],
+        "priceRange": "$1800 - $6500",
+        "hasMenu": {
+          "@type": "Menu",
+          "name": "Menú del día",
+          "hasMenuSection": {
+            "@type": "MenuSection",
+            "name": "Menú del día",
+            "hasMenuItem": [
+              {
+                "@type": "MenuItem",
+                "name": "Hamburguesa",
+                "description": "Clásica de la casa",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "3500",
+                  "priceCurrency": "COP",
+                  "availability": "https://schema.org/InStock"
+                }
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Jugo natural",
+                "description": "Refrescante y energético",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "2800",
+                  "priceCurrency": "COP",
+                  "availability": "https://schema.org/InStock"
+                }
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Empanada de queso",
+                "description": "Perfecta para llevar",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "2200",
+                  "priceCurrency": "COP",
+                  "availability": "https://schema.org/InStock"
+                }
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Café americano",
+                "description": "Ideal para arrancar",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "2500",
+                  "priceCurrency": "COP",
+                  "availability": "https://schema.org/InStock"
+                }
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Sandwich de pollo",
+                "description": "Sabor intenso y completo",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "5200",
+                  "priceCurrency": "COP",
+                  "availability": "https://schema.org/InStock"
+                }
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Té helado",
+                "description": "Ligero y refrescante",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "1800",
+                  "priceCurrency": "COP",
+                  "availability": "https://schema.org/InStock"
+                }
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Brownie",
+                "description": "Dulce para acompañar",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "3000",
+                  "priceCurrency": "COP",
+                  "availability": "https://schema.org/InStock"
+                }
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Almuerzo universitario",
+                "description": "Combo balanceado",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "6500",
+                  "priceCurrency": "COP",
+                  "availability": "https://schema.org/InStock"
+                }
+              }
+            ]
+          }
+        }
+      }
+    </script>
   </head>
 
   <body>
@@ -63,7 +175,7 @@
 
         <div id="screen-menu" class="screen active">
           <div class="scroll-area menu-scroll">
-            <p class="eyebrow">Lunes, 28 de septiembre</p>
+            <p class="eyebrow">Cafetería universitaria UCEVA</p>
 
             <h1>Menú del día</h1>
 
@@ -239,6 +351,28 @@
         </div>
       </section>
     </main>
+
+    <noscript>
+      <section style="padding: 20px">
+        <h2>Café Campus UCEVA · Menú y precios</h2>
+        <p>
+          Café Campus UCEVA es la cafetería de pedidos anticipados de la
+          universidad UCEVA: elige tus productos en línea, paga tu pedido en el
+          punto de venta y recógelo entre clases sin hacer fila. Menú del día
+          disponible para toda la comunidad universitaria.
+        </p>
+        <ul>
+          <li>Hamburguesa — $3.500 COP — Clásica de la casa</li>
+          <li>Jugo natural — $2.800 COP — Refrescante y energético</li>
+          <li>Empanada de queso — $2.200 COP — Perfecta para llevar</li>
+          <li>Café americano — $2.500 COP — Ideal para arrancar</li>
+          <li>Sandwich de pollo — $5.200 COP — Sabor intenso y completo</li>
+          <li>Té helado — $1.800 COP — Ligero y refrescante</li>
+          <li>Brownie — $3.000 COP — Dulce para acompañar</li>
+          <li>Almuerzo universitario — $6.500 COP — Combo balanceado</li>
+        </ul>
+      </section>
+    </noscript>
 
     <script src="src/main.js"></script>
   </body>

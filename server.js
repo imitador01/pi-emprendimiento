@@ -186,6 +186,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/robots.txt', (req, res) => {
+  res.set('Cache-Control', 'no-store');
   res.type('text/plain').sendFile(path.join(rootDir, 'robots.txt'));
 });
 
