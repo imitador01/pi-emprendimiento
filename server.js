@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -112,10 +113,44 @@ function buildWhatsAppUrl(order) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
 }
 
+const ORDER_CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+function buildDateStamp(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}${month}${day}`;
+}
+
+function randomCodeSegment(length) {
+  let segment = '';
+
+  for (let i = 0; i < length; i += 1) {
+    segment += ORDER_CODE_ALPHABET[crypto.randomInt(ORDER_CODE_ALPHABET.length)];
+  }
+
+  return segment;
+}
+
 function generateOrderCode() {
-  const currentYear = new Date().getFullYear();
-  const nextOrderId = db.prepare('SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM orders').get().next_id;
-  return `PED-${currentYear}-${String(nextOrderId).padStart(4, '0')}`;
+  return `PED-${buildDateStamp()}-${randomCodeSegment(6)}`;
+}
+
+function orderCodeExists(orderCode) {
+  return Boolean(db.prepare('SELECT 1 FROM orders WHERE order_code = ?').get(orderCode));
+}
+
+function ensureUniqueOrderCode() {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const candidate = generateOrderCode();
+
+    if (!orderCodeExists(candidate)) {
+      return candidate;
+    }
+  }
+
+  // Fallback defensivo: 10 caracteres aleatorios hacen la colisión aún más improbable.
+  return `PED-${buildDateStamp()}-${randomCodeSegment(10)}`;
 }
 
 function sanitizeName(value) {
@@ -280,7 +315,7 @@ app.post('/api/orders', (req, res) => {
       });
     }
 
-    const orderCode = generateOrderCode();
+    const orderCode = ensureUniqueOrderCode();
     const createdAt = new Date().toISOString();
 
     const insertOrder = db.prepare(`
