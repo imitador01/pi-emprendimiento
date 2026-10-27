@@ -178,6 +178,13 @@ function validateOrderPayload(payload) {
 
 app.use(express.json({ limit: '1mb' }));
 
+app.use((req, res, next) => {
+  if (!req.path.startsWith('/api/')) {
+    res.setHeader('X-Robots-Tag', 'all');
+  }
+  next();
+});
+
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain').sendFile(path.join(rootDir, 'robots.txt'));
 });
